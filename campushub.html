@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CampusHub</title>
+<style>
+:root{--bg:#f7f7fb;--card:#fff;--soft:#efeff6;--text:#17171f;--mute:#6b6b7b;--line:#e4e4ee;--acc:#6d4aff;--accsoft:#ece8ff;--live:#e5484d;--ok:#1f9d6b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b10;--card:#14141c;--soft:#1d1d28;--text:#ececf3;--mute:#8d8da0;--line:#262633;--acc:#9a82ff;--accsoft:#241f45;--live:#ff6369;--ok:#3dd68c}}
+:root[data-theme="dark"]{--bg:#0b0b10;--card:#14141c;--soft:#1d1d28;--text:#ececf3;--mute:#8d8da0;--line:#262633;--acc:#9a82ff;--accsoft:#241f45;--live:#ff6369;--ok:#3dd68c}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+input,textarea,select{font:inherit;font-size:16px;min-width:0;max-width:100%;color:inherit;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;outline:none}
+input:focus,textarea:focus{border-color:var(--acc)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#login{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:20px}
+.lc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:44px 36px;max-width:400px;width:100%;text-align:center}
+.lc h1{font-size:28px;margin:8px 0 6px}.lc p{color:var(--mute);margin-bottom:24px}
+.btn{background:var(--acc);color:#fff;padding:10px 18px;border-radius:10px;font-weight:600}
+.btn.ghost{background:var(--soft);color:var(--text)}.btn.ok{background:var(--ok)}.btn.sm{padding:5px 12px;font-size:13px}
+#app{display:none}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:10px 20px}
+.brand{font-weight:800;font-size:18px;color:var(--acc)}
+nav.top input{flex:1;max-width:380px;margin:0 auto 0 12px}
+.ib{position:relative;padding:6px 10px;border-radius:10px;font-size:18px}.ib:hover{background:var(--soft)}
+.bdg{position:absolute;top:0;right:2px;background:var(--live);color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:0 5px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.av.lg{width:72px;height:72px;font-size:24px}
+.wrap{max-width:1160px;margin:0 auto;padding:20px;display:grid;grid-template-columns:200px minmax(0,1fr) 280px;gap:22px}
+.side,.right{position:sticky;top:72px;height:fit-content}
+.ni{display:flex;gap:10px;align-items:center;width:100%;padding:10px 12px;border-radius:10px;margin-bottom:2px;color:var(--mute);font-weight:500}
+.ni:hover{background:var(--soft)}.ni.on{background:var(--accsoft);color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px}
+h2{font-size:20px;margin-bottom:2px}.sub{color:var(--mute);font-size:13px}
+.sec{font-weight:700;margin:20px 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+.sec span{font-size:12px;color:var(--acc);font-weight:600;cursor:pointer}
+.now{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.mo{min-width:170px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left}
+.mo:hover{border-color:var(--acc)}
+.mo .t{font-size:12px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.mo .n{font-weight:600;margin-top:4px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--live);animation:pl 1.6s infinite}
+@media(prefers-reduced-motion:reduce){.dot{animation:none}}
+@keyframes pl{50%{opacity:.3}}
+.row{display:flex;gap:12px;align-items:center}
+.grow{flex:1;min-width:0}
+.chip{background:var(--accsoft);color:var(--acc);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600}
+.post .nm{font-weight:600}.post p{margin:10px 0}
+.acts{display:flex;gap:6px;border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
+.acts button{color:var(--mute);padding:4px 10px;border-radius:8px;font-size:13px}.acts button:hover{background:var(--soft)}
+.acts .liked{color:var(--live)}
+.cm{background:var(--soft);border-radius:10px;padding:8px 12px;margin-top:8px;font-size:14px}.cm b{font-size:13px}
+.ci{width:100%;margin-top:10px}
+.comp textarea{width:100%;min-height:60px;resize:vertical}
+.comp .row{margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:12px}
+.gc{cursor:pointer;margin:0}.gc:hover{border-color:var(--acc)}
+.gi{width:42px;height:42px;border-radius:12px;background:var(--accsoft);display:flex;align-items:center;justify-content:center;font-size:21px}
+.tabs{display:flex;gap:4px;margin:14px 0;background:var(--soft);padding:4px;border-radius:12px;width:fit-content}
+.tabs button{padding:6px 16px;border-radius:9px;font-weight:600;color:var(--mute)}.tabs .on{background:var(--card);color:var(--text)}
+.bub{padding:8px 12px;border-radius:14px;background:var(--soft);max-width:80%;width:fit-content;margin-bottom:6px}
+.bub.me{background:var(--acc);color:#fff;margin-left:auto}
+.task{display:flex;gap:10px;padding:6px 0;cursor:pointer}.task.d span{text-decoration:line-through;color:var(--mute)}
+.ev .d{background:var(--accsoft);color:var(--acc);border-radius:12px;padding:8px 14px;text-align:center;font-weight:800;line-height:1.1;font-size:20px}
+.ev .d small{display:block;font-size:11px;font-weight:700}
+.empty{text-align:center;color:var(--mute);padding:36px 16px;border:1px dashed var(--line);border-radius:16px}
+.empty b{display:block;color:var(--text);margin-bottom:4px}
+.dd{position:absolute;right:20px;top:60px;width:320px;max-width:calc(100vw - 40px);background:var(--card);border:1px solid var(--line);border-radius:14px;display:none;z-index:60;overflow:hidden}
+.dd.show{display:block}.dd .it{padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px}.dd .it.u{background:var(--accsoft)}
+.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99}.toast.show{opacity:1}
+nav.mob{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);justify-content:space-around;padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px));z-index:50}
+nav.mob button{font-size:20px;padding:4px 14px}
+html,body{overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation}.chip{white-space:nowrap}
+@media(max-width:1024px){.wrap{grid-template-columns:minmax(0,1fr);padding:14px}.side,.right{display:none}nav.mob{display:flex}body{padding-bottom:68px}}
+@media(max-width:600px){nav.top{padding:8px 12px;gap:2px}nav.top input{display:none}.brand{margin-right:auto}.grid{grid-template-columns:1fr}.post .row{flex-wrap:wrap}.post .row .grow{flex:1 1 140px}.lc{padding:32px 22px}.ev.row{flex-wrap:wrap}.dd{right:10px}.tabs{width:100%}.tabs button{flex:1}.bub{max-width:92%}.now{scroll-snap-type:x proximity}.mo{min-width:150px}}
+</style>
+</head>
+<body>
+<div id="login"><div class="lc"><div style="font-size:42px">🎓</div><h1>CampusHub</h1><p>One verified home for everything happening on campus.</p><button class="btn" style="width:100%" onclick="enter()">Continue with college email</button><p style="margin:16px 0 0;font-size:12px">Only @yourcollege.edu accounts can join.</p><button class="btn ghost sm" style="margin-top:14px" onclick="theme()">Switch theme</button></div></div>
+<div id="app">
+<nav class="top"><span class="brand" role="button" onclick="go('home')">CampusHub</span><input placeholder="Search groups, posts, people" aria-label="Search" onfocus="go('explore')"><button class="ib" onclick="theme()" title="Switch theme" aria-label="Switch theme">🌓</button><button class="ib" onclick="notif(event)" aria-label="Notifications">🔔<span class="bdg" id="nb">3</span></button><button class="ib" onclick="go('messages')" aria-label="Messages">💬</button><button class="row" onclick="go('profile')"><div class="av">AS</div></button></nav>
+<div class="dd" id="dd"></div>
+<div class="wrap"><aside class="side" id="side"></aside><main id="main"></main><aside class="right" id="right"></aside></div>
+<nav class="mob"><button onclick="go('home')">🏠</button><button onclick="go('explore')">🔍</button><button onclick="go('events')">📅</button><button onclick="go('messages')">💬</button><button onclick="go('profile')">👤</button></nav>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const S={view:'home',room:null,tab:'stage',convo:null,
+groups:[
+{id:1,n:'Dance Club',i:'💃',c:'Arts',m:128,j:true,live:42,d:'Weekly rehearsals, open mics and the annual showcase. All styles welcome.',meet:'Saturdays 4 PM, Auditorium'},
+{id:2,n:'Music Club',i:'🎵',c:'Music',m:94,j:true,live:12,d:'Jam sessions, open mic nights and production workshops.',meet:'Fridays 6 PM, Amphitheatre'},
+{id:3,n:'Coding Club',i:'💻',c:'Tech',m:210,j:false,live:0,d:'Hackathons, DSA study groups and open-source sprints.',meet:'Wednesdays 5 PM, CS Block'},
+{id:4,n:'Drama Society',i:'🎭',c:'Arts',m:76,j:false,live:0,d:'Theatre productions, improv nights and acting workshops.',meet:'Thursdays 5 PM, Main Auditorium'},
+{id:5,n:'Photography',i:'📸',c:'Arts',m:142,j:false,live:0,d:'Photo walks, editing sessions and the annual exhibition.',meet:'Sundays 7 AM, Main Gate'},
+{id:6,n:'Sports Club',i:'⚽',c:'Sports',m:187,j:false,live:0,d:'Inter-college tournaments and weekly fitness sessions.',meet:'Daily 6 AM, Ground'}],
+posts:[
+{id:1,a:'Priya Verma',ini:'PV',g:1,t:'2h ago',x:'Annual showcase is next month. Rehearsals start Saturday at 4 PM in the main auditorium. Bring your energy!',l:24,liked:false,cm:[{a:'Neha Kapoor',x:'Count me in!'}],open:false},
+{id:2,a:'Rohan Mehta',ini:'RM',g:3,t:'5h ago',x:'Problem statements for the 24-hour hackathon are out. Theme: Tech for Social Good. Register your team by Friday.',l:41,liked:true,cm:[],open:false},
+{id:3,a:'Ananya Iyer',ini:'AI',g:2,t:'1d ago',x:'Open mic night was magical. Thank you to everyone who performed. Next session is acoustic only.',l:67,liked:false,cm:[{a:'Rahul Singh',x:'Best night this semester.'},{a:'Sara D\'Souza',x:'Where do I sign up for the next one?'}],open:false}],
+events:[
+{id:1,d:'05',m:'NOV',t:'Drama Auditions',w:'Fri 5:00 PM, Main Auditorium',g:4,n:42,going:false,today:false},
+{id:2,d:'06',m:'NOV',t:'Hackathon 2026',w:'Sat 9:00 AM, CS Block',g:3,n:156,going:true,today:false},
+{id:3,d:'12',m:'NOV',t:'Open Mic Night',w:'Fri 6:30 PM, Amphitheatre',g:2,n:88,going:false,today:false},
+{id:4,d:'18',m:'NOV',t:'Campus Photo Walk',w:'Tue 7:00 AM, Main Gate',g:5,n:34,going:false,today:false}],
+notifs:[{x:'<b>Priya Verma</b> posted in Dance Club',u:1},{x:'<b>Coding Club</b> added Hackathon 2026',u:1},{x:'<b>Ananya Iyer</b> replied to your comment',u:1},{x:'<b>Neha Kapoor</b> joined Dance Club',u:0}],
+convos:[{ini:'PV',n:'Priya Verma',u:1,msgs:[['Are you coming to rehearsal on Saturday?',0]]},{ini:'RM',n:'Rohan Mehta',u:1,msgs:[['Check the hackathon problem statements',0]]},{ini:'NK',n:'Neha Kapoor',u:0,msgs:[['Thanks for the feedback on my post!',0]]}],
+back:{1:[['Priya','Costumes arrive Thursday. Please confirm your size.'],['Neha','Confirmed, M.']],2:[['Ananya','Setlist doc is pinned. Add your song by Wednesday.']]},
+tasks:{1:[['Book auditorium for Saturday',1],['Collect costume sizes',0],['Print showcase flyers',0]],2:[['Confirm amps and mics',0],['Draft acoustic night poster',1]]}};
+const $=id=>document.getElementById(id),G=id=>S.groups.find(g=>g.id==id);
+const stored=()=>{try{return localStorage.getItem('ch-theme')}catch(e){return null}};
+function theme(){const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme:dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('ch-theme',r.dataset.theme)}catch(e){}}
+if(stored())document.documentElement.dataset.theme=stored();
+function enter(){$('login').style.display='none';$('app').style.display='block';go('home');toast('Welcome back, Aarav')}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000)}
+function go(v,a){S.view=v;if(v==='room'){S.room=a;S.tab='stage'}if(v==='chat')S.convo=a;$('dd').classList.remove('show');render();scrollTo(0,0)}
+function render(){
+ const nav=[['home','🏠','Home'],['explore','🔍','Explore'],['mygroups','👥','My groups'],['events','📅','Events'],['messages','💬','Messages'],['profile','👤','Profile']];
+ const cur=S.view==='room'?'explore':S.view==='chat'?'messages':S.view;
+ $('side').innerHTML=nav.map(n=>`<button class="ni ${n[0]===cur?'on':''}" onclick="go('${n[0]}')">${n[1]} ${n[2]}</button>`).join('');
+ const live=S.groups.filter(g=>g.live);
+ $('right').innerHTML=`<div class="card"><b>Live now</b>${live.map(g=>`<button class="row" style="width:100%;padding:8px 0;text-align:left" onclick="go('room',${g.id})"><div class="gi" style="width:34px;height:34px;font-size:17px">${g.i}</div><div class="grow"><div style="font-weight:600;font-size:14px">${g.n}</div><div class="sub">${g.live} here now</div></div></button>`).join('')||'<p class="sub">Nothing live right now.</p>'}</div><div class="card"><b>Suggested groups</b>${S.groups.filter(g=>!g.j).slice(0,3).map(g=>`<div class="row" style="padding:8px 0"><div class="grow"><div style="font-weight:600;font-size:14px;cursor:pointer" onclick="go('room',${g.id})">${g.i} ${g.n}</div><div class="sub">${g.m} members</div></div><button class="btn sm" onclick="join(${g.id})">Join</button></div>`).join('')}</div>`;
+ $('nb').style.display=S.notifs.some(n=>n.u)?'':'none';$('nb').textContent=S.notifs.filter(n=>n.u).length;
+ $('main').innerHTML=V[S.view]();
+}
+function post(p){const g=G(p.g);return`<div class="card post"><div class="row"><div class="av">${p.ini}</div><div class="grow"><div class="nm">${p.a}</div><div class="sub">${p.t}</div></div><button class="chip" onclick="go('room',${g.id})">${g.i} ${g.n}</button></div><p>${p.x}</p><div class="acts"><button class="${p.liked?'liked':''}" onclick="like(${p.id})">${p.liked?'❤️':'🤍'} ${p.l}</button><button onclick="cmt(${p.id})">💬 ${p.cm.length}</button><button onclick="toast('Link copied')">Share</button><button style="margin-left:auto" onclick="toast('Reported. A moderator will review it.')">Report</button></div>${p.open?p.cm.map(c=>`<div class="cm"><b>${c.a}</b> ${c.x}</div>`).join('')+`<input class="ci" data-p="${p.id}" placeholder="Write a comment and press Enter" onkeydown="if(event.key==='Enter')addC(${p.id},this)">`:''}</div>`}
+function composer(gid){const mine=S.groups.filter(g=>g.j);return`<div class="card comp"><textarea id="pt" placeholder="${gid?'Post in '+G(gid).n:'Share something with your groups'}"></textarea><div class="row">${gid?'':`<select id="pg">${mine.map(g=>`<option value="${g.id}">${g.i} ${g.n}</option>`).join('')}</select>`}<button class="btn sm" style="margin-left:auto" onclick="addP(${gid||0})">Post</button></div></div>`}
+function feed(list){return list.length?list.map(post).join(''):'<div class="empty"><b>No posts yet</b>Be the first to share something with this group.</div>'}
+function gcard(g){return`<div class="card gc" onclick="go('room',${g.id})"><div class="row"><div class="gi">${g.i}</div><div class="grow"><b>${g.n}</b><div class="sub">${g.c}</div></div></div><p class="sub" style="margin:12px 0">${g.d}</p><div class="row"><span class="sub grow">${g.m} members</span><button class="btn sm ${g.j?'ok':''}" onclick="event.stopPropagation();join(${g.id})">${g.j?'Joined':'Join'}</button></div></div>`}
+function ev(e){const g=G(e.g);return`<div class="card ev row"><div class="d">${e.d}<small>${e.m}</small></div><div class="grow"><b>${e.t}</b><div class="sub">${e.w} · ${g.n}</div><div class="sub">${e.n} going</div></div><button class="btn sm ${e.going?'ok':''}" onclick="rsvp(${e.id})">${e.going?'Going':'RSVP'}</button></div>`}
+const V={
+home(){const moments=[...S.groups.filter(g=>g.live).map(g=>`<button class="mo" onclick="go('room',${g.id})"><div class="t"><span class="dot"></span>Live now</div><div class="n">${g.i} ${g.n}</div><div class="sub">${g.live} here</div></button>`),...S.events.slice(0,2).map(e=>`<button class="mo" onclick="go('events')"><div class="t">${e.m} ${e.d}</div><div class="n">${e.t}</div><div class="sub">${e.w.split(',')[0]}</div></button>`)].join('');
+ return`<h2>Today on campus</h2><p class="sub" style="margin-bottom:12px">What is happening now and next</p><div class="now">${moments}</div><div class="sec">From your groups</div>${composer(0)}${feed(S.posts.filter(p=>G(p.g).j))}`},
+explore(){return`<h2>Explore groups</h2><p class="sub" style="margin-bottom:14px">Join clubs that match your interests</p><div class="grid">${S.groups.map(gcard).join('')}</div>`},
+mygroups(){const m=S.groups.filter(g=>g.j);return`<h2>My groups</h2><p class="sub" style="margin-bottom:14px">Groups you are a member of</p>${m.length?`<div class="grid">${m.map(gcard).join('')}</div>`:'<div class="empty"><b>You have not joined any groups</b>Open Explore and join one to see its posts here.</div>'}`},
+room(){const g=G(S.room),st=S.tab==='stage';
+ return`<div class="card"><div class="row"><div class="gi" style="width:56px;height:56px;font-size:28px">${g.i}</div><div class="grow"><h2>${g.n}</h2><div class="sub">${g.m} members · ${g.c}${g.live?' · '+g.live+' here now':''}</div><div class="sub">Meets ${g.meet}</div></div><button class="btn ${g.j?'ok':''}" onclick="join(${g.id})">${g.j?'Joined':'Join'}</button></div><p style="margin-top:12px">${g.d}</p></div>
+ <div class="tabs"><button class="${st?'on':''}" onclick="tab('stage')">Stage</button><button class="${st?'':'on'}" onclick="tab('back')">Backstage</button></div>
+ ${st?(g.j?composer(g.id):'')+feed(S.posts.filter(p=>p.g==g.id)):!g.j?'<div class="empty"><b>Backstage is for members</b>Join this group to see its chat and task list.</div>':`<div class="card"><b>Tasks</b>${(S.tasks[g.id]||[]).map((t,i)=>`<div class="task ${t[1]?'d':''}" onclick="tk(${g.id},${i})">${t[1]?'☑':'☐'} <span>${t[0]}</span></div>`).join('')||'<p class="sub">No tasks yet.</p>'}</div><div class="card"><b>Chat</b><div style="margin:10px 0">${(S.back[g.id]||[]).map(m=>`<div class="bub"><b>${m[0]}</b> ${m[1]}</div>`).join('')||'<p class="sub">No messages yet. Say hello.</p>'}</div><input class="ci" style="margin:0" placeholder="Message the group and press Enter" onkeydown="if(event.key==='Enter')bs(${g.id},this)"></div>`}`},
+events(){return`<h2>Upcoming events</h2><p class="sub" style="margin-bottom:14px">RSVP to save your spot</p>${S.events.map(ev).join('')}`},
+messages(){return`<h2>Messages</h2><p class="sub" style="margin-bottom:14px">Conversations with club mates</p>${S.convos.map((c,i)=>`<button class="card row" style="width:100%;text-align:left" onclick="go('chat',${i})"><div class="av">${c.ini}</div><div class="grow"><b>${c.n}</b><div class="sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.msgs[c.msgs.length-1][0]}</div></div>${c.u?'<span class="dot" style="background:var(--acc)"></span>':''}</button>`).join('')}`},
+chat(){const c=S.convos[S.convo];c.u=0;return`<button class="btn ghost sm" onclick="go('messages')">Back</button><h2 style="margin:12px 0">${c.n}</h2><div class="card">${c.msgs.map(m=>`<div class="bub ${m[1]?'me':''}">${m[0]}</div>`).join('')}<input class="ci" placeholder="Type a message and press Enter" onkeydown="if(event.key==='Enter')send(this)"></div>`},
+profile(){const mine=S.posts.filter(p=>p.a==='Aarav Sharma'),j=S.groups.filter(g=>g.j);
+ return`<div class="card"><div class="row"><div class="av lg">AS</div><div class="grow"><h2>Aarav Sharma</h2><div class="sub">CSE · 3rd year · aarav@yourcollege.edu</div><div class="row" style="margin-top:8px">${j.map(g=>`<span class="chip">${g.i} ${g.n}</span>`).join('')}</div></div></div></div><div class="sec">Your posts</div>${mine.length?mine.map(post).join(''):'<div class="empty"><b>You have not posted yet</b>Share something from the Home page.</div>'}`}};
+function like(id){const p=S.posts.find(x=>x.id==id);p.liked=!p.liked;p.l+=p.liked?1:-1;render()}
+function cmt(id){const p=S.posts.find(x=>x.id==id);p.open=!p.open;render()}
+function addC(id,el){const v=el.value.trim();if(!v)return;S.posts.find(x=>x.id==id).cm.push({a:'You',x:v.replace(/</g,'&lt;')});render();const n=document.querySelector('.ci[data-p="'+id+'"]');if(n)n.focus()}
+function addP(gid){const t=$('pt').value.trim();if(!t)return toast('Write something first');const g=gid||+$('pg').value;S.posts.unshift({id:Date.now(),a:'Aarav Sharma',ini:'AS',g,t:'Just now',x:t.replace(/</g,'&lt;'),l:0,liked:false,cm:[],open:false});render();toast('Posted to '+G(g).n)}
+function join(id){const g=G(id);g.j=!g.j;g.m+=g.j?1:-1;render();toast(g.j?'Joined '+g.n:'Left '+g.n)}
+function rsvp(id){const e=S.events.find(x=>x.id==id);e.going=!e.going;e.n+=e.going?1:-1;render();toast(e.going?'You are going to '+e.t:'RSVP cancelled')}
+function tab(t){S.tab=t;render()}
+function tk(g,i){S.tasks[g][i][1]^=1;render()}
+function bs(g,el){const v=el.value.trim();if(!v)return;(S.back[g]=S.back[g]||[]).push(['You',v.replace(/</g,'&lt;')]);render()}
+function send(el){const v=el.value.trim();if(!v)return;S.convos[S.convo].msgs.push([v.replace(/</g,'&lt;'),1]);render()}
+function notif(e){e.stopPropagation();const d=$('dd');d.innerHTML=`<div class="it row"><b class="grow">Notifications</b><button class="chip" onclick="S.notifs.forEach(n=>n.u=0);render();$('dd').classList.remove('show')">Mark all read</button></div>`+S.notifs.map(n=>`<div class="it ${n.u?'u':''}">${n.x}</div>`).join('');d.classList.toggle('show')}
+document.addEventListener('click',e=>{if(!e.target.closest('#dd'))$('dd').classList.remove('show')});
+</script>
+</body>
+</html>
